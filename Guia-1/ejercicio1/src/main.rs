@@ -15,11 +15,11 @@ fn main() {
     println!("Ingrese debajo la tercera nota");
     stdin().read_line(&mut nota_c).unwrap();
     
-    let nota_a_int: f32 = nota_a.trim().parse().unwrap();
-    let nota_b_int: f32 = nota_b.trim().parse().unwrap();
-    let nota_c_int: f32 = nota_c.trim().parse().unwrap();
+    let nota_a_float: f32 = nota_a.trim().parse().unwrap();
+    let nota_b_float: f32 = nota_b.trim().parse().unwrap();
+    let nota_c_float: f32 = nota_c.trim().parse().unwrap();
 
-    let promedio: f32 = (nota_a_int + nota_b_int + nota_c_int) / 3.0;
+    let promedio: f32 = (nota_a_float + nota_b_float + nota_c_float) / 3.0;
 
     print!("El alumno, de matricula {}, tiene promedio {}", &matricula.trim(), promedio);
 }

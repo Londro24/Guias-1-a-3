@@ -1,57 +1,50 @@
 use std::io::stdin;
 
-fn numero_mayor(numero_a_ingresar: i32, mayor: i32, menor: i32, contador: u32) -> i32 {
-    if contador == 1 {
-        let mayor: i32 = numero_a_ingresar;
-        return mayor;
-    } else {
-        if numero_a_ingresar > mayor && numero_a_ingresar > menor{
-            let mayor: i32 = numero_a_ingresar;
-            return mayor;
-        } else {
-            return mayor;
-        }
-    }
+fn numero_par(mut numero:u32) -> u32 {
+    numero = numero / 2;
+    return numero;
 }
 
-fn numero_menor(numero_a_ingresar: i32, mayor: i32, menor: i32 , contador: u32) -> i32 {
-    if contador == 1 {
-        let menor: i32 = numero_a_ingresar;
-        return menor;
-    } else {
-        if numero_a_ingresar < mayor && numero_a_ingresar < menor {
-            let menor: i32 = numero_a_ingresar;
-            return menor;
-        } else {
-            return menor;
-        }
-    }
+fn numero_impar(mut numero: u32) -> u32 {
+    numero = (numero * 3) + 1;
+    return numero;
 }
 
 
 fn main() {
 
-    println!("Bienvenido, este es un programa donde hay un ingreso de números 
-    indefinido hasta que ingrese el '0'");
+    println!("Bienvenido, este es un programa donde el número que ingrese se le realizará la conjetura de ULAM, comentando tmabien el número de pasos que hizo.");
     
-    let mut mayor: i32 = 0;
-    let mut menor: i32 = 0;
     let mut contador: u32 = 1;
 
     loop {
-        let mut numero: String = String::new();
+        let mut numero_a_ingresar: String = String::new();
         println!("Ingrese debajo un número");
-        stdin().read_line(&mut numero).unwrap();
-        let numero_a_ingresar: i32 = numero.trim().parse().unwrap();
+        stdin().read_line(&mut numero_a_ingresar).unwrap();
+        let mut numero: u32 = numero_a_ingresar.trim().parse().unwrap();
+        
+        if numero == 0 {
+            println!("Error, el programa volvera a iniciar");
+            continue;
+        }
 
-        mayor = numero_mayor(numero_a_ingresar, mayor, menor, contador);
-        menor = numero_menor(numero_a_ingresar, mayor, menor, contador);
+        let mut numero_original:u32 = 0;
+        numero_original = numero_original + numero;
 
-        println!("El numero mayor es {}, y el menor es {}", mayor, menor);
+        while numero != 1 {
+            if numero % 2 == 0 {
+                numero = numero_par(numero)
+            } else {
+                numero = numero_impar(numero)
+            }
+            contador += 1
+        }
 
-        if numero_a_ingresar == 0 {
+        println!("Al numero {} tomo {} pasos para llegar al número 1", numero_original, contador);
+
+        if numero == 1 {
             break;
         }
-        contador += 1
     }
+
 }

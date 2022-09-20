@@ -1,50 +1,68 @@
-use std::io::stdin;
+use std::{io::stdin, convert::TryInto};
 
-fn numero_par(mut numero:u32) -> u32 {
-    numero = numero / 2;
-    return numero;
+fn is_number_valid(n: &str) -> bool {
+    if n.chars().next().unwrap().is_numeric() {
+        return true;
+    }
+    return false
 }
 
-fn numero_impar(mut numero: u32) -> u32 {
-    numero = (numero * 3) + 1;
-    return numero;
-}
+fn proceso_magico(rut: &str) -> u32 {
+    let mut rut_al_revez: String = String::new();
+    let mut contador: u32 = 1; //rut.len().try_into().unwrap();
+    let mut rut_numero: u32 = 0;
 
+    for n in rut.to_string().trim().chars(){
+        rut_al_revez = n.to_string() + &rut_al_revez; 
+    }
+
+    for n in rut_al_revez.to_string().trim().chars(){
+        if contador == 1 {
+            rut_numero += (n as u32 - '0' as u32) * 2;
+        } else if contador == 2 {
+            rut_numero += (n as u32 - '0' as u32) * 3;
+        } else if contador == 3 {
+            rut_numero += (n as u32 - '0' as u32) * 4;
+        } else if contador == 4 {
+            rut_numero += (n as u32 - '0' as u32) * 5;
+        } else if contador == 5 {
+            rut_numero += (n as u32 - '0' as u32) * 6;
+        } else if contador == 6 {
+            rut_numero += (n as u32 - '0' as u32) * 7;
+        } else if contador == 7 {
+            rut_numero += (n as u32 - '0' as u32) * 2;
+        } else if contador == 8 {
+            rut_numero += (n as u32 - '0' as u32) * 3;
+        }
+        contador += 1
+    }
+
+    return 0;
+}
 
 fn main() {
 
-    println!("Bienvenido, este es un programa donde el número que ingrese se le realizará la conjetura de ULAM, comentando tmabien el número de pasos que hizo.");
+    println!("Bienvenido, este es un programa para conseguir el digito verificador de un RUT");
     
-    let mut contador: u32 = 1;
+    let mut rut_a_ingresar: String = String::new();
+    println!("Ingrese debajo el rut:");
+    stdin().read_line(&mut rut_a_ingresar).unwrap();
 
-    loop {
-        let mut numero_a_ingresar: String = String::new();
-        println!("Ingrese debajo un número");
-        stdin().read_line(&mut numero_a_ingresar).unwrap();
-        let mut numero: u32 = numero_a_ingresar.trim().parse().unwrap();
-        
-        if numero == 0 {
-            println!("Error, el programa volvera a iniciar");
-            continue;
-        }
-
-        let mut numero_original:u32 = 0;
-        numero_original = numero_original + numero;
-
-        while numero != 1 {
-            if numero % 2 == 0 {
-                numero = numero_par(numero)
-            } else {
-                numero = numero_impar(numero)
-            }
-            contador += 1
-        }
-
-        println!("Al numero {} tomo {} pasos para llegar al número 1", numero_original, contador);
-
-        if numero == 1 {
-            break;
+    let mut rut_texto: String = String::new();
+    for n in rut_a_ingresar.to_string().trim().chars(){
+        if is_number_valid(&n.to_string()){
+            rut_texto = rut_texto + &n.to_string(); 
         }
     }
+    
+    let _rut: u32 = rut_texto.trim().parse().expect("ya pero, almenos ingresa un número");
+
+    let digito_verificador: u32 = proceso_magico(&rut_texto);
+
+    let rut_original: &str = &rut_a_ingresar.trim();
+
+
+    
+    println!("El rut {} tiene el siguiente digito verificardor {}", rut_original, digito_verificador);
 
 }
